@@ -1,0 +1,29 @@
+---
+- hosts: all
+  sudo: yes
+  pre_tasks:
+    - name: Update apt and system
+      apt: update_cache=yes upgrade=yes
+    - name: Create persistent folder
+      file: path="{{ persistent_fs }}" state=directory mode=0755
+  roles:
+    - role: s3fs
+      s3fs_mounts:
+        - mount: "{{ persistent_fs }}"
+          bucket: "{{ persistent_bucket_name }}"
+
+- hosts: chatserver
+  sudo: yes
+  roles:
+  - role: mumble
+    murmur_database: "{{ persistent_fs }}/mumble/mumble.sqlite"
+    murmur_logfile: "{{ persistent_fs }}/mumble/mumble.log"
+  - role: dnsimple
+    hostname: "{{ dnsimple_hostname }}"
+    domain_token: "{{ dnsimple_domain_token }}"
+    domain_name: "{{ dnsimple_domain_name }}"
+  post_tasks:
+    - name: Create Mumble folder
+      file: path="{{ persistent_fs }}/mumble" state=directory mode=0755 owner=mumble-server
+      notify: Restart Murmur
+

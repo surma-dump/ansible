@@ -1,0 +1,5 @@
+---
+- name: Render config
+  template: src=dnsimple.sh dest=/etc/init.d/dnsimple owner=root mode=0755
+- name: Register DNS
+  service: name=dnsimple enabled=yes state=started
