@@ -1,5 +1,5 @@
 [lolrankedteam]
-lolrankedteam-00 ansible_ssh_host=amazon.54.154.131.213.xip.io ansible_ssh_user=ubuntu
+lolrankedteam-00 ansible_ssh_host=amazon.54.154.51.222.xip.io ansible_ssh_user=ubuntu
 
 [chatserver:children]
 lolrankedteam

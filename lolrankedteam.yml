@@ -26,4 +26,6 @@
     - name: Create Mumble folder
       file: path="{{ persistent_fs }}/mumble" state=directory mode=0755 owner=mumble-server
       notify: Restart Murmur
+    - name: Set SuperUser password
+      command: murmurd -ini /etc/mumble-server.ini -supw {{ murmur_supw }}
 
